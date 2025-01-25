@@ -33,7 +33,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Shoot
+      name: PistolShoot
       takeName: LP_Hand|LP_HandAction
       internalID: -4313789560726217331
       firstFrame: 0
@@ -62,7 +62,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Reload
+      name: PistolReload
       takeName: LP_Hand|LP_HandAction
       internalID: 8302404661232673447
       firstFrame: 30
@@ -91,7 +91,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: LP_Hand|LP_HandAction
+      name: Nothing
       takeName: LP_Hand|LP_HandAction
       internalID: 2494907385767177268
       firstFrame: 28
