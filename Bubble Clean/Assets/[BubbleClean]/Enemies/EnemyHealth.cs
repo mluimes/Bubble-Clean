@@ -2,14 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FlierHealth : MonoBehaviour
+public class EnemyHealth : MonoBehaviour
 {
     private int currentHealth;
     private int maxHealth;
 
-    public bool IsDead => currentHealth <= 0;
+    public bool IsDead => currentHealth == 0;
 
-    public FlierHealth(int maxHealth)
+    // Método para inicializar la salud
+    public void Initialize(int maxHealth)
     {
         this.maxHealth = maxHealth;
         currentHealth = maxHealth;
