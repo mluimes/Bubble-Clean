@@ -23,6 +23,9 @@ public class Character : MonoBehaviour
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked; // Bloquear el cursor
+        // Asegurarse de que la cámara apunte hacia adelante
+        xRotation = 0f; 
+        CameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
     }
 
     void Update()
@@ -33,7 +36,7 @@ public class Character : MonoBehaviour
 
         // Limita la rotación vertical
         xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+        xRotation = Mathf.Clamp(xRotation, -70f, 40f);
 
         // Aplica la rotación a la cámara y al cuerpo
         CameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);

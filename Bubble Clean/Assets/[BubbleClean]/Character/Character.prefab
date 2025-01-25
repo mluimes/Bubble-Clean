@@ -813,7 +813,7 @@ MonoBehaviour:
   Controller: {fileID: 2308862934409134109}
   CameraTransform: {fileID: 2989581818967923251}
   MouseSensitivity: 100
-  MoveSpeed: 5
+  MoveSpeed: 10
   JumpForce: 2
   Gravity: -18.1
 --- !u!114 &6846785819518111160

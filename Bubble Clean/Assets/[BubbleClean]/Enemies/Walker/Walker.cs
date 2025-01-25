@@ -9,6 +9,9 @@ public class Walker : Enemy
 
     [Header("Projectile Settings")]
     [SerializeField] private GameObject walkerProjectile;
+    [SerializeField] private int projectileDamage;
+    [SerializeField] private float projectileSpeed;
+    [SerializeField] private float projectileLifetime;
     [SerializeField] private Transform firePoint;
 
     void Start()
@@ -17,19 +20,25 @@ public class Walker : Enemy
         if (animator == null)
         {
             animator = GetComponentInChildren<Animator>(); // Ensure the animator is assigned
-
         }
     }
 
     void Update()
     {
-        FollowPlayer();
+        if (player == null) return;
 
-        // // Check if within attack range and cooldown has passed
-        // if (Vector3.Distance(transform.position, player.position) <= _attackRange && Time.time - lastAttackTime >= attackCooldown)
-        // {
-        //     Attack();
-        // }
+        // Check if within attack range
+        bool isInAttackRange = Vector3.Distance(transform.position, player.position) <= attackRange;
+
+        if (isInAttackRange)
+        {
+            animator.SetBool("IsWalking", false); // Stop walking animation
+            Attack(); // Attack the player
+        }
+        else
+        {
+            FollowPlayer(); // Continue moving if not in range
+        }
     }
 
     protected override void FollowPlayer()
@@ -52,14 +61,13 @@ public class Walker : Enemy
 
     void Attack()
     {
-        // Trigger the Fire event in the animator
+        // Ensure cooldown is respected
+        if (Time.time - lastAttackTime < attackCooldown) return;
 
         // Instantiate the projectile at the fire point
         if (walkerProjectile != null && firePoint != null)
         {
-            animator.SetTrigger("Attack");
             StartCoroutine(FireProjectileWithDelay());
-            Instantiate(walkerProjectile, firePoint.position, firePoint.rotation);
         }
 
         lastAttackTime = Time.time; // Reset the attack cooldown timer
@@ -67,7 +75,10 @@ public class Walker : Enemy
 
     IEnumerator FireProjectileWithDelay()
     {
+        animator.SetTrigger("Attack");
+        Debug.Log("Firing projectile...");
         yield return new WaitForSeconds(0.4f); // Adjust the delay as needed
-        Instantiate(walkerProjectile, firePoint.position, firePoint.rotation);
+        var projectile = Instantiate(walkerProjectile, firePoint.position, firePoint.rotation);
+        projectile.GetComponent<WalkerProjectile>().Fire(firePoint.forward, projectileSpeed, projectileLifetime, projectileDamage);
     }
 }

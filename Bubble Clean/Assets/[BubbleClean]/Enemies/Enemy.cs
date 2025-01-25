@@ -9,11 +9,16 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected int currentHealth; // Salud actual
     [SerializeField] protected EnemyHealth health; // Componente de salud
 
-    [Header("Attack Settings")]
-    [SerializeField] protected int damage; // Daño que inflige al jugador
-    [SerializeField] protected float damageCooldown; // Tiempo mínimo entre daños en segundos
+    [Header("Melee Settings")]
+    [SerializeField] protected int meleeDamage; // Daño cuerpo a cuerpo
+    [SerializeField] protected float meleeCooldown; // Tiempo mínimo entre daños en segundos
     [SerializeField] protected float lastDamageTime; // Último tiempo de daño realizado
+    
+    [Header("Attack Settings")]
+    [SerializeField] protected int attackDamage; // Daño de ataque
+    [SerializeField] protected float attackCooldown; // Tiempo mínimo entre ataques en segundos
     [SerializeField] protected float attackRange; // Rango de ataque
+    
 
     [Header("Score Settings")]
     [SerializeField] protected int scoreValue; // Puntos que otorga al ser destruido
@@ -24,11 +29,19 @@ public class Enemy : MonoBehaviour
     protected Transform player; // Referencia al jugador
 
     private bool isAttacking = false; // Indica si está atacando
+    private Collider enemyCollider;
 
     protected virtual void Awake()
     {
         currentHealth = maxHealth;
         player = GameObject.FindGameObjectWithTag("Player").transform;
+
+        // Buscar el Collider en los hijos
+        enemyCollider = GetComponentInChildren<Collider>();
+        if (enemyCollider == null)
+        {
+            Debug.LogError("No Collider found for Enemy. Ensure the Collider is assigned to the Enemy or its child objects.");
+        }
     }
 
     void Update()
@@ -49,41 +62,34 @@ public class Enemy : MonoBehaviour
 
         if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Player detected! Attacking...");
-            isAttacking = true; // Detener movimiento al atacar
-            DamagePlayer(other.gameObject);
+            Debug.Log("Melee dmg");
+            isAttacking = true;
+            MeleePlayer(other.gameObject);
         }
-
     }
 
     private void OnCollisionStay(Collision other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            // Comprobar si ya está atacando
             if (!isAttacking)
             {
-                Debug.Log("Starting attack...");
                 isAttacking = true;
             }
-
-            // Continuar dañando al jugador dentro del rango
-            DamagePlayer(other.gameObject);
+            MeleePlayer(other.gameObject);
         }
         else
         {
-            // Asegurarse de no entrar en ataque si no es el jugador
             isAttacking = false;
         }
     }
-
 
     private void OnCollisionExit(Collision other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Player out of range. Resuming movement.");
-            isAttacking = false; // Reanudar movimiento al dejar de atacar
+            Debug.Log("Resuming movement.");
+            isAttacking = false;
         }
     }
 
@@ -91,11 +97,9 @@ public class Enemy : MonoBehaviour
     {
         Vector3 direction = (player.position - transform.position).normalized;
 
-        // Rotar hacia el jugador
         Quaternion lookRotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
 
-        // Mover hacia el jugador
         transform.position += direction * speed * Time.deltaTime;
     }
 
@@ -110,14 +114,14 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void DamagePlayer(GameObject playerObject)
+    private void MeleePlayer(GameObject playerObject)
     {
-        if (Time.time - lastDamageTime >= damageCooldown)
+        if (Time.time - lastDamageTime >= meleeCooldown)
         {
             var playerHealth = playerObject.GetComponentInChildren<PlayerHealth>();
             if (playerHealth != null)
             {
-                playerHealth.TakeDamage(damage);
+                playerHealth.TakeDamage(meleeDamage);
                 lastDamageTime = Time.time;
                 Debug.Log("Player damaged!");
             }
