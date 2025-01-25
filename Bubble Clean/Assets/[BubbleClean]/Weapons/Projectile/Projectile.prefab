@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7378028476788709359}
   - component: {fileID: 6472301736185187266}
   - component: {fileID: 7996837672091713825}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bubble
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,9 +117,9 @@ GameObject:
   - component: {fileID: 5823768882515865031}
   - component: {fileID: -2460469503726677425}
   - component: {fileID: -3695505054943608041}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Projectile
-  m_TagString: 'PlayerProjectile '
+  m_TagString: PlayerProjectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

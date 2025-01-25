@@ -117,4 +117,4 @@ MonoBehaviour:
   projectilePrefab: {fileID: 5823768882515865031, guid: 92467d4cf9732ee4db2b64bb3510e9e5, type: 3}
   spreadAngle: 0
   projectileSpeed: 10
-  reloadTime: 0
+  reloadTime: 2.5
