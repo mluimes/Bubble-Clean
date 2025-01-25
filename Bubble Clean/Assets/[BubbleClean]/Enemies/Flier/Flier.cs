@@ -1,44 +1,34 @@
 using UnityEngine;
 
-public class Flier : MonoBehaviour
+public class Flier : Enemy
 {
-    [Header("Movement Settings")]
-    public Transform player; // Referencia al jugador
-    public float speed = 5f; // Velocidad de movimiento
-    public float rotationSpeed = 2f; // Velocidad de giro hacia el jugador
-    public float hoverHeight = 2f; // Altura base del vuelo
+    [Header("Flying Settings")]
+    public float hoverHeight = 2f; // Altura de vuelo
     public float oscillationAmplitude = 0.5f; // Amplitud de oscilación
-    public float oscillationSpeed = 2f; // Velocidad de oscilación
-    public float attackRange = 1.5f; // Rango para atacar
-
-    [Header("Health Settings")]
-    public int maxHealth = 3; // Salud máxima
-
-    private FlierHealth health; // Componente de salud
-    private Vector3 directionToPlayer; // Dirección calculada hacia el jugador
-
-    private void Awake()
+    public float oscillationSpeed = 2f;
+    
+    [Header("Base Settings")]
+    [SerializeField] private int _maxHealth = 3;
+    [SerializeField] private int _damage = 1;
+    [SerializeField] private int _scoreValue = 10;
+    [SerializeField] private float _speed = 2f;
+    [SerializeField] private float _rotationSpeed = 2f;
+    
+    protected override void Awake()
     {
-        health = new FlierHealth(maxHealth);
+        base.Awake();
+        maxHealth = 3;
+        currentHealth = maxHealth;
+        damage = 1;
+        scoreValue = 10;
+        speed = 2f;
+        rotationSpeed = 2f;
     }
 
-    private void Update()
-    {
-        if (player == null) return;
-
-        FollowPlayer();
-
-        // Destruir si la salud llega a 0
-        if (health.IsDead)
-        {
-            Die();
-        }
-    }
-
-    private void FollowPlayer()
+    protected override void FollowPlayer()
     {
         // Calcular dirección hacia el jugador
-        directionToPlayer = (player.position - transform.position).normalized;
+        Vector3 directionToPlayer = (player.position - transform.position).normalized;
 
         // Rotar hacia el jugador sin afectar la oscilación
         Vector3 flatDirection = new Vector3(directionToPlayer.x, 0, directionToPlayer.z); // Sin altura
@@ -49,34 +39,8 @@ public class Flier : MonoBehaviour
         float oscillation = Mathf.Sin(Time.time * oscillationSpeed) * oscillationAmplitude; // Movimiento seno
         Vector3 targetPosition = player.position + Vector3.up * hoverHeight + Vector3.up * oscillation;
 
-        // Si está cerca del jugador, descender
-        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
-        if (distanceToPlayer <= attackRange)
-        {
-            targetPosition.y = 0.5f; // Altura baja al atacar
-        }
-
         // Mover gradualmente hacia el objetivo
         Vector3 movement = (targetPosition - transform.position).normalized;
         transform.position += movement * speed * Time.deltaTime;
-    }
-
-    private void OnCollisionEnter(Collision other)
-    {
-        if (other.collider.CompareTag("PlayerProjectile"))
-        {
-            TakeDamage(1);
-        }
-    }
-
-    public void TakeDamage(int damage)
-    {
-        health.Reduce(damage);
-    }
-
-    private void Die()
-    {
-        // Aquí puedes agregar efectos o animaciones antes de destruir
-        Destroy(gameObject);
     }
 }
