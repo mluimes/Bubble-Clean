@@ -7,14 +7,6 @@ public class Flier : Enemy
     public float oscillationAmplitude = 0.5f; // Amplitud de oscilación
     public float oscillationSpeed = 2f;
 
-    [Header("Base Settings")]
-    [SerializeField] private int _maxHealth = 3;
-    [SerializeField] private int _damage = 1;
-    [SerializeField] private int _scoreValue = 10;
-    [SerializeField] private float _speed = 2f;
-    [SerializeField] private float _rotationSpeed = 2f;
-    [SerializeField] private float _attackRange = 4f;
-
     protected override void Awake()
     {
         base.Awake();
@@ -43,7 +35,7 @@ public class Flier : Enemy
         float targetHeight = hoverHeight;
         float adjustedOscillationAmplitude = oscillationAmplitude;
 
-        if (distanceToPlayer <= _attackRange)
+        if (distanceToPlayer <= attackRange)
         {
             // Reducir la altura y la amplitud de oscilación al atacar
             targetHeight = 0.2f;

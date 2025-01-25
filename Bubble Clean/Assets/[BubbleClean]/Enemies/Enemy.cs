@@ -7,12 +7,13 @@ public class Enemy : MonoBehaviour
     [Header("Health Settings")]
     [SerializeField] protected int maxHealth; // Salud máxima
     [SerializeField] protected int currentHealth; // Salud actual
-    [SerializeField] private EnemyHealth health; // Componente de salud
+    [SerializeField] protected EnemyHealth health; // Componente de salud
 
-    [Header("Damage Settings")]
+    [Header("Attack Settings")]
     [SerializeField] protected int damage; // Daño que inflige al jugador
-    [SerializeField] private float damageCooldown; // Tiempo mínimo entre daños en segundos
-    [SerializeField] private float lastDamageTime; // Último tiempo de daño realizado
+    [SerializeField] protected float damageCooldown; // Tiempo mínimo entre daños en segundos
+    [SerializeField] protected float lastDamageTime; // Último tiempo de daño realizado
+    [SerializeField] protected float attackRange; // Rango de ataque
 
     [Header("Score Settings")]
     [SerializeField] protected int scoreValue; // Puntos que otorga al ser destruido

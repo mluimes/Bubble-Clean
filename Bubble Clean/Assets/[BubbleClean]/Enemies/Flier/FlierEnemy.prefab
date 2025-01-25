@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8825770807668130391}
   - component: {fileID: 9050862370237887884}
+  - component: {fileID: -8974207107768562975}
   - component: {fileID: 8331879871823206899}
   - component: {fileID: 5668592836259949985}
   m_Layer: 7
@@ -47,15 +48,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56d6a1e9ca984df4684d6356a6fded95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 3
+  currentHealth: 3
+  health: {fileID: -8974207107768562975}
+  damage: 1
+  damageCooldown: 1
+  lastDamageTime: 0
+  attackRange: 4
+  scoreValue: 10
+  speed: 4
+  rotationSpeed: 2
   hoverHeight: 1.5
   oscillationAmplitude: 3
   oscillationSpeed: 2
-  _maxHealth: 3
-  _damage: 1
-  _scoreValue: 10
-  _speed: 2
-  _rotationSpeed: 2
-  _attackRange: 4
+--- !u!114 &-8974207107768562975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7493970415901962019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ec5063970acdcb4fae0d9d52788afbf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!136 &8331879871823206899
 CapsuleCollider:
   m_ObjectHideFlags: 0
