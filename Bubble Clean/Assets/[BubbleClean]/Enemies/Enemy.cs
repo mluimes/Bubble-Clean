@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour
 
     [Header("Damage Settings")]
     protected int damage = 1; // Daño que inflige al jugador
-    public float damageCooldown = 0.1f; // Tiempo mínimo entre daños en segundos
+    private float damageCooldown = 0.1f; // Tiempo mínimo entre daños en segundos
     private float lastDamageTime; // Último tiempo de daño recibido
     
     [Header("Score Settings")]
@@ -41,6 +41,26 @@ public class Enemy : MonoBehaviour
         if (other.gameObject.CompareTag("PlayerProjectile")) {
             Debug.Log("Hit!");
             TakeDamage(1);
+        }
+        if (other.gameObject.CompareTag("Player")) {
+            other.gameObject.GetComponentInChildren<PlayerHealth>().TakeDamage(damage);
+        }
+    }
+
+    private float collisionStayTime = 0f;
+    private void OnCollisionStay(Collision other) {
+        if (other.gameObject.CompareTag("Player")) {
+            collisionStayTime += Time.deltaTime;
+            if (collisionStayTime >= 1f) {
+                other.gameObject.GetComponentInChildren<PlayerHealth>().TakeDamage(damage);
+                collisionStayTime = 0f; // Reiniciar el tiempo de colisión
+            }
+        }
+    }
+
+    private void OnCollisionExit(Collision other) {
+        if (other.gameObject.CompareTag("Player")) {
+            collisionStayTime = 0f;
         }
     }
 
