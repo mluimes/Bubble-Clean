@@ -27,19 +27,74 @@ public class Walker : Enemy
     {
         if (player == null) return;
 
-        // Check if within attack range
+        // Check if the player is within attack range
         bool isInAttackRange = Vector3.Distance(transform.position, player.position) <= attackRange;
 
         if (isInAttackRange)
         {
-            animator.SetBool("IsWalking", false); // Stop walking animation
-            Attack(); // Attack the player
+            // Always rotate to face the player while in attack range, ignoring vertical movement
+            Vector3 directionToPlayer = player.position - transform.position;
+            directionToPlayer.y = 0; // Ignore vertical movement
+            if (Vector3.Angle(transform.forward, directionToPlayer) > 5f)
+            {
+                RotateTowardsPlayer();
+                animator.SetBool("IsWalking", true);
+            }
+            else
+            {
+                animator.SetBool("IsWalking", false); // Stop walking if facing the player
+            }
+
+            // Attack the player (if cooldown allows)
+            Attack();
         }
         else
         {
             FollowPlayer(); // Continue moving if not in range
         }
+
+        // Check if the enemy is "walking" (moving or rotating)
+        // bool isWalking = !isInAttackRange || animator.GetBool("IsWalking");
+        // animator.SetBool("IsWalking", isWalking);
     }
+
+    void RotateTowardsPlayer()
+    {
+        if (player == null) return;
+
+        // Calculate direction to the player
+        Vector3 direction = (player.position - transform.position).normalized;
+
+        // Smoothly rotate towards the player
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
+
+    }
+
+    void Attack()
+    {
+        // Ensure cooldown is respected
+        if (Time.time - lastAttackTime < attackCooldown) return;
+
+        // Start attack animation and fire projectile
+        if (walkerProjectile != null && firePoint != null)
+        {
+            StartCoroutine(FireProjectileWithDelay());
+        }
+
+        lastAttackTime = Time.time; // Reset the attack cooldown timer
+
+    }
+
+    IEnumerator FireProjectileWithDelay()
+    {
+        animator.SetTrigger("Attack");
+        Debug.Log("Firing projectile...");
+        yield return new WaitForSeconds(0.4f); // Adjust the delay as needed
+        var projectile = Instantiate(walkerProjectile, firePoint.position, firePoint.rotation);
+        projectile.GetComponent<WalkerProjectile>().Fire(firePoint.forward, projectileSpeed, projectileLifetime, projectileDamage);
+    }
+
 
     protected override void FollowPlayer()
     {
@@ -57,28 +112,5 @@ public class Walker : Enemy
             // Move towards the player
             transform.position += direction * speed * Time.deltaTime;
         }
-    }
-
-    void Attack()
-    {
-        // Ensure cooldown is respected
-        if (Time.time - lastAttackTime < attackCooldown) return;
-
-        // Instantiate the projectile at the fire point
-        if (walkerProjectile != null && firePoint != null)
-        {
-            StartCoroutine(FireProjectileWithDelay());
-        }
-
-        lastAttackTime = Time.time; // Reset the attack cooldown timer
-    }
-
-    IEnumerator FireProjectileWithDelay()
-    {
-        animator.SetTrigger("Attack");
-        Debug.Log("Firing projectile...");
-        yield return new WaitForSeconds(0.4f); // Adjust the delay as needed
-        var projectile = Instantiate(walkerProjectile, firePoint.position, firePoint.rotation);
-        projectile.GetComponent<WalkerProjectile>().Fire(firePoint.forward, projectileSpeed, projectileLifetime, projectileDamage);
     }
 }

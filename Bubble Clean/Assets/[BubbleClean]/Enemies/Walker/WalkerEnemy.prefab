@@ -107,7 +107,7 @@ MonoBehaviour:
   rotationSpeed: 2
   walkerProjectile: {fileID: 4365284039130905601, guid: e83d2eb2abd1b4d458c1451d51c0b79f, type: 3}
   projectileDamage: 3
-  projectileSpeed: 8
+  projectileSpeed: 15
   projectileLifetime: 3
   firePoint: {fileID: 7813054309603093751}
 --- !u!136 &684191101153238869
