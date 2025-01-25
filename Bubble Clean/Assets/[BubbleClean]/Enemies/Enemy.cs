@@ -5,25 +5,24 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [Header("Health Settings")]
-    protected int maxHealth = 3; // Salud máxima
-    protected int currentHealth; // Salud actual
-    private EnemyHealth health; // Componente de salud
+    [SerializeField] protected int maxHealth; // Salud máxima
+    [SerializeField] protected int currentHealth; // Salud actual
+    [SerializeField] private EnemyHealth health; // Componente de salud
 
     [Header("Damage Settings")]
-    protected int damage = 1; // Daño que inflige al jugador
-    private float damageCooldown = 1f; // Tiempo mínimo entre daños en segundos
-    private float lastDamageTime; // Último tiempo de daño realizado
+    [SerializeField] protected int damage; // Daño que inflige al jugador
+    [SerializeField] private float damageCooldown; // Tiempo mínimo entre daños en segundos
+    [SerializeField] private float lastDamageTime; // Último tiempo de daño realizado
 
     [Header("Score Settings")]
-    protected int scoreValue = 10; // Puntos que otorga al ser destruido
+    [SerializeField] protected int scoreValue; // Puntos que otorga al ser destruido
 
     [Header("Movement Settings")]
-    protected float speed = 5f; // Velocidad de movimiento
-    protected float rotationSpeed = 2f; // Velocidad de giro hacia el jugador
+    [SerializeField] protected float speed; // Velocidad de movimiento
+    [SerializeField] protected float rotationSpeed; // Velocidad de giro hacia el jugador
     protected Transform player; // Referencia al jugador
 
     private bool isAttacking = false; // Indica si está atacando
-    private bool hasCollided = false; // Indica si ha colisionado con bala
 
     protected virtual void Awake()
     {
@@ -37,18 +36,13 @@ public class Enemy : MonoBehaviour
         {
             FollowPlayer();
         }
-
-        hasCollided = false;
     }
 
     private void OnCollisionEnter(Collision other)
     {
-        if (hasCollided) return;
-
         if (other.gameObject.CompareTag("PlayerProjectile"))
         {
             Debug.Log("Hit by projectile!");
-            hasCollided = true; 
             TakeDamage(1);
         }
 
