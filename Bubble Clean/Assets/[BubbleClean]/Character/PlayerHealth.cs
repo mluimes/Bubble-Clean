@@ -95,8 +95,8 @@ public class PlayerHealth : MonoBehaviour
     }
 
     void DeathCoroutine() {
-        Destroy(projectileShooter);
-        Destroy(player);
+        // Destroy(projectileShooter);
+        // Destroy(player);
         Enemy[] enemies = FindObjectsOfType<Enemy>();
         foreach (Enemy enemy in enemies)
         {
