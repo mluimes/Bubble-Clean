@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class PointsManager : MonoBehaviour
 {
-    public int CurrentPoints { get; private set; } = 0;
+    public int CurrentPoints { get; private set; } = 500;
     [SerializeField] TextMeshProUGUI pointsTxt;
 
     public void AddPoints(int amount)

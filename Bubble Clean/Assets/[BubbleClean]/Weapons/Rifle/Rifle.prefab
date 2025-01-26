@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fcfe835c98192b48ad5ff3efb8216ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shootSound: {fileID: 8300000, guid: 66bdea6ac11ff97408c3112dd7dee21a, type: 3}
   magazineSize: 30
   fireRate: 6
   bulletsPerShot: 1
