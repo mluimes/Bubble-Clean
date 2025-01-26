@@ -4,6 +4,10 @@ using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
 {
+    [SerializeField] private AudioClip shootSound;      // Sonido de disparo
+    [SerializeField] private AudioClip reloadSound;     // Sonido de recarga
+    private AudioSource audioSource;                    // AudioSource compartido
+
     public int magazineSize;
     public float fireRate;
     public int bulletsPerShot;
@@ -35,6 +39,16 @@ public abstract class Weapon : MonoBehaviour
         {
             muzzleFlash = gunMouth.GetComponentInChildren<ParticleSystem>();
         }
+
+        // Configura el AudioSource del arma
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+
+        audioSource.playOnAwake = false;
+        audioSource.loop = false;
     }
 
     public virtual void Fire(Vector3 shootDirection, Vector3 gunMouthPosition)
@@ -61,6 +75,8 @@ public abstract class Weapon : MonoBehaviour
             }
 
             muzzleFlash.Play();
+            // Reproducir el sonido de disparo
+            PlayShootSound();
             var projectile = Instantiate(projectilePrefab, gunMouthPosition, Quaternion.LookRotation(randomDirection));
             projectile.Fire(projectileSpeed, randomDirection);
             projectile.SetLifetime(projectileLifetime); // Usar el tiempo de vida definido para esta arma
@@ -79,12 +95,15 @@ public abstract class Weapon : MonoBehaviour
 
     public virtual void Reload()
     {
-        if(currentAmmo == magazineSize)
+        if (currentAmmo == magazineSize || isReloading)
             return;
+
         if (animator != null)
         {
             animator.SetTrigger("Reload");
         }
+        // Reproducir sonido de recarga
+        PlayReloadSound();
         StartCoroutine(ReloadCoroutine());
         Debug.Log("Reloading...");
     }
@@ -94,10 +113,12 @@ public abstract class Weapon : MonoBehaviour
         yield return new WaitForSeconds(reloadTime);
         currentAmmo = magazineSize;
         UpdateUI();
+        isReloading = false;
     }
 
-    void UpdateUI() {
-        magazineBar.fillAmount = 1/(float)magazineSize * (float)currentAmmo;
+    void UpdateUI()
+    {
+        magazineBar.fillAmount = 1 / (float)magazineSize * (float)currentAmmo;
     }
 
     public Vector3 GetGunMouthPosition()
@@ -109,5 +130,23 @@ public abstract class Weapon : MonoBehaviour
 
         Debug.LogError("gunMouth is not assigned!");
         return Vector3.zero;
+    }
+
+    private void PlayShootSound()
+    {
+        if (shootSound != null && audioSource != null)
+        {
+            audioSource.clip = shootSound;
+            audioSource.Play();
+        }
+    }
+
+    private void PlayReloadSound()
+    {
+        if (reloadSound != null && audioSource != null)
+        {
+            audioSource.clip = reloadSound;
+            audioSource.Play();
+        }
     }
 }

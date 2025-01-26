@@ -15,6 +15,12 @@ public class RoundManager : MonoBehaviour
     [SerializeField] public int WaitTime = 3;
     [SerializeField] GameObject roundChangeAnimation;
 
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip roundChangeSound;
+
+    // Para cambiar la música a partir de la ronda 5
+    [SerializeField] private AudioSource musicAudioSource; // Referencia al AudioSource que está reproduciendo la música
+    [SerializeField] private AudioClip newMusicClip; // El nuevo clip de música para la ronda 5
 
     public static RoundManager Instance
     {
@@ -54,6 +60,25 @@ public class RoundManager : MonoBehaviour
         StartCoroutine(StartNextRound());
         currentRound++;
         UpdateUI();
+
+        // Reproducir el sonido solo si no es la primera ronda
+        if (currentRound > 1 && audioSource != null && roundChangeSound != null)
+        {
+            audioSource.PlayOneShot(roundChangeSound);
+        }
+        else if (currentRound == 1)
+        {
+            Debug.Log("Primera ronda iniciada, no reproducir sonido.");
+        }
+
+        // Cambiar música en la ronda 5
+        if (currentRound == 5 && musicAudioSource != null && newMusicClip != null)
+        {
+            musicAudioSource.clip = newMusicClip;
+            musicAudioSource.Play(); // Iniciar la nueva canción
+            Debug.Log("Música cambiada a la ronda 5");
+        }
+
         Debug.Log($"Round {currentRound}");
         if (OnRoundChanged != null)
         {
@@ -73,7 +98,8 @@ public class RoundManager : MonoBehaviour
         }
     }
 
-    IEnumerator StartNextRound() {
+    IEnumerator StartNextRound()
+    {
         Debug.Log("Hola");
         roundTxt[0].enabled = false;
         roundChangeAnimation.SetActive(true);

@@ -29,6 +29,8 @@ public class PlayerHealth : MonoBehaviour
     CharacterController player;
     ProjectileShooter projectileShooter;
 
+    public GameObject musica;
+
     private void Awake()
     {
         player = FindAnyObjectByType<CharacterController>();
@@ -90,6 +92,8 @@ public class PlayerHealth : MonoBehaviour
         {
             audioSource.PlayOneShot(deathSound);
         }
+
+        musica.SetActive(false);
 
         DeathCoroutine();
     }

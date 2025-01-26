@@ -14,6 +14,11 @@ public class Walker : Enemy
     [SerializeField] private float projectileLifetime;
     [SerializeField] private Transform firePoint;
 
+    [Header("Audio Settings")]
+    [SerializeField] private AudioSource audioSource; // Un solo AudioSource para todos los sonidos
+    [SerializeField] private AudioClip walkClip; // El clip del sonido de caminar
+    [SerializeField] private AudioClip attackClip;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -76,6 +81,18 @@ public class Walker : Enemy
         // Ensure cooldown is respected
         if (Time.time - lastAttackTime < attackCooldown) return;
 
+        // Reproducir el sonido de disparo
+        if (audioSource != null && attackClip != null)
+        {
+            audioSource.clip = attackClip;
+            audioSource.Play();
+        }
+        else
+        {
+            Debug.LogWarning("No se ha asignado el sonido de disparo.");
+        }
+
+
         // Start attack animation and fire projectile
         if (walkerProjectile != null && firePoint != null)
         {
@@ -100,17 +117,33 @@ public class Walker : Enemy
     {
         if (player != null)
         {
-            // Calculate direction to the player
+            // Calcular la dirección hacia el jugador
             Vector3 direction = (player.position - transform.position).normalized;
 
-            animator.SetBool("IsWalking", true); // Set the Walking parameter in the animator
+            animator.SetBool("IsWalking", true); // Activar el parámetro "IsWalking" en el animator
 
-            // Rotate towards the player
+            // Reproducir el sonido de caminar si el enemigo se está moviendo
+            if (!audioSource.isPlaying || audioSource.clip != walkClip)  // Evitar que suene el audio varias veces
+            {
+                audioSource.clip = walkClip;
+                audioSource.Play();
+            }
+
+            // Rotar hacia el jugador
             Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
 
-            // Move towards the player
+            // Moverse hacia el jugador
             transform.position += direction * speed * Time.deltaTime;
+        }
+        else
+        {
+            // Detener el sonido de caminar si no se está moviendo
+            animator.SetBool("IsWalking", false);
+            if (audioSource.isPlaying && audioSource.clip == walkClip)
+            {
+                audioSource.Stop();
+            }
         }
     }
 }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5387361948385204830}
   - component: {fileID: 8501700683416058039}
   m_Layer: 0
-  m_Name: Pistol
+  m_Name: pistol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,6 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23e7fc1fd71f15c42a4bd7109216e9ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shootSound: {fileID: 8300000, guid: 987c509811588fb44af1d7843a692c10, type: 3}
+  reloadSound: {fileID: 8300000, guid: ce9e9eafcf624d2428c08b979356b5e6, type: 3}
   magazineSize: 12
   fireRate: 3
   bulletsPerShot: 1

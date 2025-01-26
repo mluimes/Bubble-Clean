@@ -11,6 +11,8 @@ public class Character : MonoBehaviour
     public float JumpForce = 5f;
     public float Gravity = -9.81f;
 
+    public AudioSource FootstepAudio; //Caminar
+
     private float xRotation = 0f; // Para limitar la rotación vertical
     private Vector3 velocity; // Para la gravedad y movimiento
     private bool isGrounded;
@@ -26,6 +28,12 @@ public class Character : MonoBehaviour
         // Asegurarse de que la cámara apunte hacia adelante
         xRotation = 0f; 
         CameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+
+        if (FootstepAudio != null)
+        {
+            FootstepAudio.loop = true;
+            FootstepAudio.Stop();
+        }
     }
 
     void Update()
@@ -69,7 +77,28 @@ public class Character : MonoBehaviour
 
         // Mueve al jugador con el CharacterController
         Controller.Move(move * MoveSpeed * Time.deltaTime);
-     
-           }   Controller.Move(velocity * Time.deltaTime); // Aplica la gravedad
+        Controller.Move(velocity * Time.deltaTime); // Aplica la gravedad
+
+        HandleFootstepAudio(move);
+    }
+
+    private void HandleFootstepAudio(Vector3 move)
+    {
+        // Verifica si el jugador se está moviendo y está en el suelo
+        bool isMoving = move.magnitude > 0.1f; // Si la magnitud del movimiento es mayor que 0.1
+        if (isMoving && isGrounded)
+        {
+            if (!FootstepAudio.isPlaying)
+            {
+                FootstepAudio.Play(); // Reproduce el sonido si no está ya sonando
+            }
+        }
+        else
+        {
+            if (FootstepAudio.isPlaying)
+            {
+                FootstepAudio.Pause(); // Pausa el sonido cuando está quieto o en el aire
+            }
+        }
     }
 }
