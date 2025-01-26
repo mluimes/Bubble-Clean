@@ -20,8 +20,6 @@ public abstract class Weapon : MonoBehaviour
     private Animator animator;
     private ParticleSystem muzzleFlash;
 
-    private bool isReloading = false;
-
     [SerializeField] private Image magazineBar;
 
     protected virtual void Awake()
@@ -93,7 +91,6 @@ public abstract class Weapon : MonoBehaviour
 
     private IEnumerator ReloadCoroutine()
     {
-        isReloading = true;
         yield return new WaitForSeconds(reloadTime);
         currentAmmo = magazineSize;
         UpdateUI();

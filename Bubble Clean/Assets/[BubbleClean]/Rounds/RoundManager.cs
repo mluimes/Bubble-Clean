@@ -27,7 +27,6 @@ public class RoundManager : MonoBehaviour
                 {
                     Debug.LogWarning("RoundManager instance not found. Creating a new one.");
                     GameObject singleton = new GameObject(typeof(RoundManager).ToString());
-                    _instance = singleton.AddComponent<RoundManager>();
                 }
             }
             return _instance;

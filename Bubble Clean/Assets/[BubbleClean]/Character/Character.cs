@@ -30,6 +30,7 @@ public class Character : MonoBehaviour
 
     void Update()
     {
+        if(Controller != null) {
         // Movimiento de la cámara (rotación)
         float mouseX = Input.GetAxis("Mouse X") * MouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * MouseSensitivity * Time.deltaTime;
@@ -60,13 +61,15 @@ public class Character : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             velocity.y = Mathf.Sqrt(JumpForce * -2f * Gravity);
-        }
+        } 
+
 
         // Aplica la gravedad
         velocity.y += Gravity * Time.deltaTime;
 
         // Mueve al jugador con el CharacterController
         Controller.Move(move * MoveSpeed * Time.deltaTime);
-        Controller.Move(velocity * Time.deltaTime); // Aplica la gravedad
+     
+           }   Controller.Move(velocity * Time.deltaTime); // Aplica la gravedad
     }
 }
