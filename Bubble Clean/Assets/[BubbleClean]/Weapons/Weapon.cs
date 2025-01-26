@@ -95,7 +95,7 @@ public abstract class Weapon : MonoBehaviour
 
     public virtual void Reload()
     {
-        if (currentAmmo == magazineSize || isReloading)
+        if (currentAmmo == magazineSize)
             return;
 
         if (animator != null)
@@ -113,7 +113,6 @@ public abstract class Weapon : MonoBehaviour
         yield return new WaitForSeconds(reloadTime);
         currentAmmo = magazineSize;
         UpdateUI();
-        isReloading = false;
     }
 
     void UpdateUI()
