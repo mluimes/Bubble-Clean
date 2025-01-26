@@ -10,7 +10,7 @@ public class Walker : Enemy
     [Header("Projectile Settings")]
     [SerializeField] private GameObject walkerProjectile;
     [SerializeField] private int projectileDamage;
-    [SerializeField] private float projectileSpeed;
+    [SerializeField] private float projectileSpeed = 15f;
     [SerializeField] private float projectileLifetime;
     [SerializeField] private Transform firePoint;
 

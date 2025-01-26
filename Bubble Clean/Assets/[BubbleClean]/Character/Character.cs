@@ -36,7 +36,7 @@ public class Character : MonoBehaviour
 
         // Limita la rotación vertical
         xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -70f, 40f);
+        xRotation = Mathf.Clamp(xRotation, -70f, 50f);
 
         // Aplica la rotación a la cámara y al cuerpo
         CameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);

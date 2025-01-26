@@ -10,6 +10,7 @@ public class Pistol : Weapon
         bulletsPerShot = 1;
         projectileLifetime = 3f;
         spreadAngle = 0;
+        projectileSpeed = 15f;
         reloadTime = 2.4f;
     }
 }

@@ -99,8 +99,8 @@ MonoBehaviour:
   meleeDamage: 1
   meleeCooldown: 1
   lastDamageTime: 0
-  attackDamage: 5
-  attackCooldown: 3
+  attackDamage: 8
+  attackCooldown: 5
   attackRange: 10
   scoreValue: 50
   speed: 2
@@ -202,7 +202,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!1001 &7130544793773744535
 PrefabInstance:

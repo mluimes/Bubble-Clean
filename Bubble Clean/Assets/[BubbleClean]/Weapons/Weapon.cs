@@ -1,5 +1,5 @@
 using System.Collections;
-using UnityEditor.Animations;
+using UnityEngine.UI;
 using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
@@ -12,14 +12,31 @@ public abstract class Weapon : MonoBehaviour
     public float spreadAngle; // Útil para armas como la escopeta
     public float projectileSpeed = 10f;
     public float reloadTime;
+
+    public Transform gunMouth;
+
     protected int currentAmmo;
     protected float lastShotTime;
-    Animator animator;
+    private Animator animator;
+    private ParticleSystem muzzleFlash;
+
+    private bool isReloading = false;
+
+    [SerializeField] private Image magazineBar;
 
     protected virtual void Awake()
     {
         currentAmmo = magazineSize;
-        animator = GetComponent<Animator>();
+        animator = GetComponentInChildren<Animator>();
+
+        if (gunMouth == null)
+        {
+            Debug.LogError($"gunMouth not found in {gameObject.name}. Please add it to the prefab.");
+        }
+        else
+        {
+            muzzleFlash = gunMouth.GetComponentInChildren<ParticleSystem>();
+        }
     }
 
     public virtual void Fire(Vector3 shootDirection, Vector3 gunMouthPosition)
@@ -40,13 +57,19 @@ public abstract class Weapon : MonoBehaviour
                 ) * shootDirection;
             }
 
-            animator.SetTrigger("Shoot");
+            if (animator != null)
+            {
+                animator.SetTrigger("Shoot");
+            }
+
+            muzzleFlash.Play();
             var projectile = Instantiate(projectilePrefab, gunMouthPosition, Quaternion.LookRotation(randomDirection));
             projectile.Fire(projectileSpeed, randomDirection);
             projectile.SetLifetime(projectileLifetime); // Usar el tiempo de vida definido para esta arma
         }
 
         currentAmmo--;
+        UpdateUI();
         lastShotTime = Time.time;
 
         if (currentAmmo == 0)
@@ -58,14 +81,36 @@ public abstract class Weapon : MonoBehaviour
 
     public virtual void Reload()
     {
-        animator.SetTrigger("Reload");
+        if(currentAmmo == magazineSize)
+            return;
+        if (animator != null)
+        {
+            animator.SetTrigger("Reload");
+        }
         StartCoroutine(ReloadCoroutine());
         Debug.Log("Reloading...");
     }
 
     private IEnumerator ReloadCoroutine()
     {
+        isReloading = true;
         yield return new WaitForSeconds(reloadTime);
         currentAmmo = magazineSize;
+        UpdateUI();
+    }
+
+    void UpdateUI() {
+        magazineBar.fillAmount = 1/(float)magazineSize * (float)currentAmmo;
+    }
+
+    public Vector3 GetGunMouthPosition()
+    {
+        if (gunMouth != null)
+        {
+            return gunMouth.position;
+        }
+
+        Debug.LogError("gunMouth is not assigned!");
+        return Vector3.zero;
     }
 }

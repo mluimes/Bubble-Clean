@@ -7,17 +7,6 @@ public class Flier : Enemy
     public float oscillationAmplitude = 0.5f; // Amplitud de oscilación
     public float oscillationSpeed = 2f;
 
-    protected override void Awake()
-    {
-        base.Awake();
-        maxHealth = 3;
-        currentHealth = maxHealth;
-        damage = 1;
-        scoreValue = 10;
-        speed = 2f;
-        rotationSpeed = 2f;
-    }
-
     protected override void FollowPlayer()
     {
         // Calcular dirección hacia el jugador

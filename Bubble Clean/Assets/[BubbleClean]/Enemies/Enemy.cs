@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -13,12 +14,12 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected int meleeDamage; // Daño cuerpo a cuerpo
     [SerializeField] protected float meleeCooldown; // Tiempo mínimo entre daños en segundos
     [SerializeField] protected float lastDamageTime; // Último tiempo de daño realizado
-    
+
     [Header("Attack Settings")]
     [SerializeField] protected int attackDamage; // Daño de ataque
     [SerializeField] protected float attackCooldown; // Tiempo mínimo entre ataques en segundos
     [SerializeField] protected float attackRange; // Rango de ataque
-    
+
 
     [Header("Score Settings")]
     [SerializeField] protected int scoreValue; // Puntos que otorga al ser destruido
@@ -31,8 +32,29 @@ public class Enemy : MonoBehaviour
     private bool isAttacking = false; // Indica si está atacando
     private Collider enemyCollider;
 
+    public delegate void DeathHandler();
+    public event DeathHandler OnDeath;
+
+    protected PointsManager pointsManager;
+
+
+    protected bool isMovementStopped = false; // Flag to control movement
+
+    // Method to stop the enemy from moving
+    public void StopMovement()
+    {
+        isMovementStopped = true;
+    }
+
+    // Method to resume the enemy's movement
+    public void ResumeMovement()
+    {
+        isMovementStopped = false;
+    }
+
     protected virtual void Awake()
     {
+        pointsManager = FindObjectOfType<PointsManager>();
         currentHealth = maxHealth;
         player = GameObject.FindGameObjectWithTag("Player").transform;
 
@@ -46,7 +68,7 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        if (player != null && !isAttacking)
+        if (player != null && !isAttacking && !isMovementStopped)
         {
             FollowPlayer();
         }
@@ -103,7 +125,7 @@ public class Enemy : MonoBehaviour
         transform.position += direction * speed * Time.deltaTime;
     }
 
-    public void TakeDamage(int damageAmount)
+    protected virtual void TakeDamage(int damageAmount)
     {
         currentHealth -= damageAmount;
         Debug.Log($"Enemy health: {currentHealth}");
@@ -114,7 +136,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void MeleePlayer(GameObject playerObject)
+    protected virtual void MeleePlayer(GameObject playerObject)
     {
         if (Time.time - lastDamageTime >= meleeCooldown)
         {
@@ -128,9 +150,21 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    protected bool isDead = false; // Flag para controlar si ya está muerto
+
     protected virtual void Die()
     {
-        Debug.Log("Enemy died.");
+        if (isDead) return; // Evitar que se ejecute más de una vez
+
+        isDead = true; // Marcar como muerto
+        pointsManager.AddPoints(scoreValue);
+        Debug.Log("Enemy died. Added " + scoreValue.ToString() + " pts.");
+        InvokeDeath();
         Destroy(gameObject);
+    }
+
+    protected void InvokeDeath()
+    {
+        OnDeath?.Invoke();
     }
 }
