@@ -4,8 +4,9 @@ using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
 {
-    [SerializeField] private AudioClip shootSound;
-    private AudioSource audioSource;
+    [SerializeField] private AudioClip shootSound;      // Sonido de disparo
+    [SerializeField] private AudioClip reloadSound;     // Sonido de recarga
+    private AudioSource audioSource;                    // AudioSource compartido
 
     public int magazineSize;
     public float fireRate;
@@ -50,13 +51,10 @@ public abstract class Weapon : MonoBehaviour
 
         audioSource.playOnAwake = false;
         audioSource.loop = false;
-
     }
 
     public virtual void Fire(Vector3 shootDirection, Vector3 gunMouthPosition)
     {
-        
-
         if (Time.time - lastShotTime < 1 / fireRate || currentAmmo <= 0)
             return;
 
@@ -99,12 +97,15 @@ public abstract class Weapon : MonoBehaviour
 
     public virtual void Reload()
     {
-        if(currentAmmo == magazineSize)
+        if (currentAmmo == magazineSize || isReloading)
             return;
+
         if (animator != null)
         {
             animator.SetTrigger("Reload");
         }
+        // Reproducir sonido de recarga
+        PlayReloadSound();
         StartCoroutine(ReloadCoroutine());
         Debug.Log("Reloading...");
     }
@@ -115,10 +116,12 @@ public abstract class Weapon : MonoBehaviour
         yield return new WaitForSeconds(reloadTime);
         currentAmmo = magazineSize;
         UpdateUI();
+        isReloading = false;
     }
 
-    void UpdateUI() {
-        magazineBar.fillAmount = 1/(float)magazineSize * (float)currentAmmo;
+    void UpdateUI()
+    {
+        magazineBar.fillAmount = 1 / (float)magazineSize * (float)currentAmmo;
     }
 
     public Vector3 GetGunMouthPosition()
@@ -137,6 +140,15 @@ public abstract class Weapon : MonoBehaviour
         if (shootSound != null && audioSource != null)
         {
             audioSource.clip = shootSound;
+            audioSource.Play();
+        }
+    }
+
+    private void PlayReloadSound()
+    {
+        if (reloadSound != null && audioSource != null)
+        {
+            audioSource.clip = reloadSound;
             audioSource.Play();
         }
     }
