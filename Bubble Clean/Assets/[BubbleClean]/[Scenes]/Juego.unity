@@ -3236,6 +3236,74 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4e8801cddb44bb34ba5afb0166eb23f9, type: 3}
   m_PrefabInstance: {fileID: 329999634}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &368688547
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 368688548}
+  - component: {fileID: 368688550}
+  - component: {fileID: 368688549}
+  m_Layer: 5
+  m_Name: EventSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &368688548
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 368688547}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1807564967}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &368688549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 368688547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
+--- !u!114 &368688550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 368688547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
 --- !u!1 &374707145 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6446621518691604037, guid: 4e8801cddb44bb34ba5afb0166eb23f9, type: 3}
@@ -34562,10 +34630,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 649313030592323932, guid: dfa04edacadfda7419dabdadda919bf0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1807564965}
+    - target: {fileID: 649313030592323932, guid: dfa04edacadfda7419dabdadda919bf0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: VolverInicio
+      objectReference: {fileID: 0}
     - target: {fileID: 1759077853572889889, guid: dfa04edacadfda7419dabdadda919bf0, type: 3}
       propertyPath: musica
       value: 
       objectReference: {fileID: 1972817601}
+    - target: {fileID: 1759077853572889889, guid: dfa04edacadfda7419dabdadda919bf0, type: 3}
+      propertyPath: maxHealth
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1759077853572889889, guid: dfa04edacadfda7419dabdadda919bf0, type: 3}
       propertyPath: deathSound
       value: 
@@ -34646,13 +34726,36 @@ PrefabInstance:
       propertyPath: FootstepAudio
       value: 
       objectReference: {fileID: 1950050007}
+    - target: {fileID: 6651757526572172585, guid: dfa04edacadfda7419dabdadda919bf0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7070127154745430614, guid: dfa04edacadfda7419dabdadda919bf0, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8004660567253733252, guid: dfa04edacadfda7419dabdadda919bf0, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9132334253224630952, guid: dfa04edacadfda7419dabdadda919bf0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1807564965}
+    - target: {fileID: 9132334253224630952, guid: dfa04edacadfda7419dabdadda919bf0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Reintentar
+      objectReference: {fileID: 0}
     - target: {fileID: 9191821935471581670, guid: dfa04edacadfda7419dabdadda919bf0, type: 3}
       propertyPath: m_Name
       value: Character
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 5169810498409830178, guid: dfa04edacadfda7419dabdadda919bf0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 368688548}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 9191821935471581670, guid: dfa04edacadfda7419dabdadda919bf0, type: 3}
       insertIndex: -1
@@ -36154,6 +36257,22 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 553899340}
   m_SourcePrefab: {fileID: 100100000, guid: ac7f59598ea826d489fe221a4974c7e3, type: 3}
+--- !u!114 &1807564965 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4560963490891332780, guid: dfa04edacadfda7419dabdadda919bf0, type: 3}
+  m_PrefabInstance: {fileID: 1609117474}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d63bb00582dd684f8839aeb3795ad14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!224 &1807564967 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5169810498409830178, guid: dfa04edacadfda7419dabdadda919bf0, type: 3}
+  m_PrefabInstance: {fileID: 1609117474}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1821409297
 GameObject:
   m_ObjectHideFlags: 0
