@@ -7,7 +7,7 @@ public class RoundManager : MonoBehaviour
     private static RoundManager _instance;
     [SerializeField] TextMeshProUGUI[] roundTxt;
 
-    private int currentRound = 0;
+    [SerializeField] private int currentRound = 0;
     public int CurrentRound => currentRound;
 
     public delegate void RoundChanged(int newRound);
@@ -18,9 +18,8 @@ public class RoundManager : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip roundChangeSound;
 
-    // Para cambiar la m˙sica a partir de la ronda 5
-    [SerializeField] private AudioSource musicAudioSource; // Referencia al AudioSource que est· reproduciendo la m˙sica
-    [SerializeField] private AudioClip newMusicClip; // El nuevo clip de m˙sica para la ronda 5
+    // √çndice de la m√∫sica para la ronda 5 (especificado en el inspector)
+    [SerializeField] private int musicIndexForRound5 = 1;
 
     public static RoundManager Instance
     {
@@ -71,12 +70,11 @@ public class RoundManager : MonoBehaviour
             Debug.Log("Primera ronda iniciada, no reproducir sonido.");
         }
 
-        // Cambiar m˙sica en la ronda 5
-        if (currentRound == 5 && musicAudioSource != null && newMusicClip != null)
+        // Cambiar m√∫sica en la ronda 5
+        if (currentRound == 5)
         {
-            musicAudioSource.clip = newMusicClip;
-            musicAudioSource.Play(); // Iniciar la nueva canciÛn
-            Debug.Log("M˙sica cambiada a la ronda 5");
+            MusicClass.Instance.PlaySpecificMusic(musicIndexForRound5);  // Cambia la m√∫sica con el √≠ndice especificado
+            Debug.Log("M√∫sica cambiada en la ronda 5.");
         }
 
         Debug.Log($"Round {currentRound}");
