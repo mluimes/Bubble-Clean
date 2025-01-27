@@ -183,6 +183,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 748a7376b8e35124b80a4035085e749f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6498114913948059791}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 748a7376b8e35124b80a4035085e749f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7208436156649838696}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 748a7376b8e35124b80a4035085e749f, type: 3}
       insertIndex: -1
@@ -34644,7 +34647,7 @@ PrefabInstance:
       objectReference: {fileID: 1972817601}
     - target: {fileID: 1759077853572889889, guid: dfa04edacadfda7419dabdadda919bf0, type: 3}
       propertyPath: maxHealth
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1759077853572889889, guid: dfa04edacadfda7419dabdadda919bf0, type: 3}
       propertyPath: deathSound
@@ -44651,13 +44654,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7302076424731578576}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.7031182, z: -0, w: 0.711073}
-  m_LocalPosition: {x: -18.234, y: 1.485, z: 4.731}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: 0.99998426, z: -0, w: 0.0056248903}
+  m_LocalPosition: {x: 0.061014064, y: -0.03550577, z: -1.1897508}
+  m_LocalScale: {x: 1.8750811, y: 1.875082, z: 1.8750811}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7952327283597366250}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 2079762839}
   m_LocalEulerAnglesHint: {x: 0, y: 89.355, z: 0}
 --- !u!1 &7284439542772762960
 GameObject:
@@ -44886,5 +44889,4 @@ SceneRoots:
   - {fileID: 1706486553}
   - {fileID: 236581971}
   - {fileID: 143900879}
-  - {fileID: 7208436156649838696}
   - {fileID: 1972817603}
