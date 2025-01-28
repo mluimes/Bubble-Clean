@@ -6,13 +6,13 @@ using UnityEngine.SceneManagement;
 public class MusicClass : MonoBehaviour 
 {
     private static MusicClass _instance;
-
     private AudioSource _audioSource;
-    public AudioClip[] musicClips; // Array para almacenar las canciones
 
+    public AudioClip[] musicClips; 
     [SerializeField] private int IndiceMusica;
 
-    // Singleton para asegurarse de que solo haya una instancia
+    private const string MusicPrefKey = "MusicPlaying";
+
     public static MusicClass Instance
     {
         get
@@ -22,7 +22,6 @@ public class MusicClass : MonoBehaviour
                 _instance = FindObjectOfType<MusicClass>();
                 if (_instance == null)
                 {
-                    Debug.LogWarning("MusicClass instance not found, creating one.");
                     GameObject singleton = new GameObject("MusicClass");
                     _instance = singleton.AddComponent<MusicClass>();
                     DontDestroyOnLoad(singleton);
@@ -32,9 +31,8 @@ public class MusicClass : MonoBehaviour
         }
     }
 
-    private void Awake()     
+    private void Awake()
     {
-        // Asegurarse de que no haya duplicados
         if (_instance != null && _instance != this)
         {
             Destroy(gameObject);
@@ -46,46 +44,55 @@ public class MusicClass : MonoBehaviour
         }
 
         _audioSource = GetComponent<AudioSource>();
-        SceneManager.sceneLoaded += OnSceneLoaded; // Detecta cuando se carga una nueva escena
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void Start()
     {
+        // Verificar si la música debe estar sonando o no
+        bool isMusicPlaying = PlayerPrefs.GetInt(MusicPrefKey, 1) == 1;
         PlaySpecificMusic(IndiceMusica);
+        
+        if (!isMusicPlaying)
+        {
+            PauseMusic();
+        }
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // Cambiar la música según la escena
         PlayMusicForScene(scene.name);
+
+        // Verificar el estado guardado al cargar la escena
+        bool isMusicPlaying = PlayerPrefs.GetInt(MusicPrefKey, 1) == 1;
+        if (!isMusicPlaying)
+        {
+            PauseMusic();
+        }
     }
 
-    // Cambiar música dependiendo de la escena
     public void PlayMusicForScene(string sceneName)
     {
-        if (sceneName == "Inicio")  // Si la escena es "Inicio"
+        if (sceneName == "Inicio")
         {
-            PlaySpecificMusic(0);  // Reproduce la primera canción
+            PlaySpecificMusic(0);
         }
-        else if (sceneName == "Juego")  // Si la escena es "Juego"
+        else if (sceneName == "Juego")
         {
-            PlaySpecificMusic(1);  // Reproduce la segunda canción
+            PlaySpecificMusic(1);
         }
         else
         {
-            // Si no está especificada, puedes elegir música por defecto
-            PlaySpecificMusic(0);  // O cualquier otra canción por defecto
+            PlaySpecificMusic(0);
         }
     }
 
-    // Reproducir música específica desde el array (pasando un índice)
     public void PlaySpecificMusic(int index)
     {
         if (index >= 0 && index < musicClips.Length)
         {
             _audioSource.clip = musicClips[index];
-            Debug.Log("Playing specific clip: " + musicClips[index].name); // Log de depuración
-            _audioSource.Play(); // Reproduce el AudioClip específico
+            _audioSource.Play();
         }
         else
         {
@@ -93,7 +100,7 @@ public class MusicClass : MonoBehaviour
         }
     }
 
-    public void StopMusic()     
+    public void StopMusic()
     {
         _audioSource.Stop();
     }
@@ -116,7 +123,6 @@ public class MusicClass : MonoBehaviour
 
     private void OnDestroy()
     {
-        // Desuscribirse del evento al destruir el objeto
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 }
