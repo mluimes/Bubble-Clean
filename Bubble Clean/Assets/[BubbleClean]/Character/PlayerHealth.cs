@@ -14,7 +14,6 @@ public class PlayerHealth : MonoBehaviour
 
 
     [Header("Damage Feedback")]
-    [SerializeField] private GameObject damageEffect; // Efecto visual al recibir daño (opcional)
     [SerializeField] private AudioClip damageSound; // Sonido al recibir daño (opcional)
     [SerializeField] private AudioClip deathSound; // Sonido al morir (opcional)
     private AudioSource audioSource;
@@ -48,12 +47,8 @@ public class PlayerHealth : MonoBehaviour
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth); // Asegurar que la salud no sea negativa
         UpdateHealthUI();
 
-        // Reproducir feedback visual y sonoro
-        if (damageEffect != null)
-        {
-            Instantiate(damageEffect, transform.position, Quaternion.identity);
-        }
-        if (damageSound != null && audioSource != null)
+        // Solo reproducir el sonido si no se está reproduciendo otro
+        if (!audioSource.isPlaying && damageSound != null)
         {
             audioSource.PlayOneShot(damageSound);
         }
