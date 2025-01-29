@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
@@ -26,6 +27,8 @@ public class PlayerHealth : MonoBehaviour
 
     CharacterController player;
     ProjectileShooter projectileShooter;
+
+    public event Action OnPlayerDeath;
 
     private void Awake()
     {
@@ -79,13 +82,18 @@ public class PlayerHealth : MonoBehaviour
     {
         isDead = true;
 
+        OnPlayerDeath?.Invoke(); // Notificar a otros componentes
+
         // Reproducir sonido de muerte si existe
         if (deathSound != null && audioSource != null)
         {
             audioSource.PlayOneShot(deathSound);
         }
 
-        MusicClass.Instance.StopMusic(); 
+        if (MusicClass.Instance != null) 
+        {
+            MusicClass.Instance.StopMusic(); 
+        }   
 
         DeathCoroutine();
     }
@@ -97,6 +105,7 @@ public class PlayerHealth : MonoBehaviour
         foreach (Enemy enemy in enemies)
         {
             enemy.StopMovement();
+            Destroy(enemy.gameObject);
         }
         foreach (GameObject canvas in canvases)
         {

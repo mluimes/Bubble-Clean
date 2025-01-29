@@ -14,22 +14,30 @@ public class MusicClass : MonoBehaviour
     private const string MusicPrefKey = "MusicPlaying";
 
     public static MusicClass Instance
+{
+    get
     {
-        get
+        if (_instance == null)
         {
+            _instance = FindObjectOfType<MusicClass>();
             if (_instance == null)
             {
-                _instance = FindObjectOfType<MusicClass>();
-                if (_instance == null)
-                {
-                    GameObject singleton = new GameObject("MusicClass");
-                    _instance = singleton.AddComponent<MusicClass>();
-                    DontDestroyOnLoad(singleton);
-                }
+                GameObject singleton = new GameObject("MusicClass");
+                _instance = singleton.AddComponent<MusicClass>();
+
+                // Añadir un AudioSource al objeto creado dinámicamente
+                AudioSource audioSource = singleton.AddComponent<AudioSource>();
+                audioSource.loop = true; // Opcional: Configura el AudioSource para que repita música
+                audioSource.playOnAwake = false; // Evita que comience a reproducir automáticamente
+                _instance._audioSource = audioSource;
+
+                DontDestroyOnLoad(singleton);
             }
-            return _instance;
         }
+        return _instance;
     }
+}
+
 
     private void Awake()
     {

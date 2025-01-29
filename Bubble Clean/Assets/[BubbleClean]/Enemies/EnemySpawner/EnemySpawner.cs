@@ -20,6 +20,8 @@ public class EnemySpawner : MonoBehaviour
     [Range(0, 100)]
     public int type3Probability = 5; // Probabilidad de que aparezca el tercer enemigo
 
+    private bool isPlayerDead = false; // Flag para controlar el estado del jugador
+
     private void Awake()
     {
         if (Instance == null)
@@ -47,6 +49,13 @@ public class EnemySpawner : MonoBehaviour
         {
             Debug.LogWarning("RoundManager instance not found. Waiting for initialization.");
         }
+
+        // Escuchar evento de muerte del jugador
+        PlayerHealth playerHealth = FindObjectOfType<PlayerHealth>();
+        if (playerHealth != null)
+        {
+            playerHealth.OnPlayerDeath += StopSpawning;
+        }
     }
 
 
@@ -55,6 +64,13 @@ public class EnemySpawner : MonoBehaviour
         if (RoundManager.Instance != null)
         {
             RoundManager.Instance.OnRoundChanged -= HandleRoundChanged;
+        }
+
+        // Desuscribir evento de muerte del jugador
+        PlayerHealth playerHealth = FindObjectOfType<PlayerHealth>();
+        if (playerHealth != null)
+        {
+            playerHealth.OnPlayerDeath -= StopSpawning;
         }
     }
 
@@ -68,6 +84,8 @@ public class EnemySpawner : MonoBehaviour
 
     private IEnumerator SpawnEnemies(int round)
     {
+        if (isPlayerDead) yield break; // Salir si el jugador está muerto
+
         Debug.Log("Spawning enemies for round " + round);
         if (spawnPoints == null || spawnPoints.Length == 0)
         {
@@ -133,5 +151,12 @@ public class EnemySpawner : MonoBehaviour
 
     private IEnumerator WaitAndStartNextRound() {
         yield return new WaitForSeconds(RoundManager.Instance.WaitTime);
+    }
+
+    private void StopSpawning()
+    {
+        isPlayerDead = true;
+        StopAllCoroutines(); // Detener todas las corrutinas de spawn activas
+        Debug.Log("Spawning stopped as player is dead.");
     }
 }
