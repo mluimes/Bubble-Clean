@@ -6,7 +6,7 @@ public class Character : MonoBehaviour
 {
     public CharacterController Controller; // Asigna el CharacterController aquí
     public Transform CameraTransform; // La cámara del jugador
-    public float MouseSensitivity = 100f;
+    public float MouseSensitivity = 300f;
     public float MoveSpeed = 5f;
     public float JumpForce = 5f;
     public float Gravity = -9.81f;
